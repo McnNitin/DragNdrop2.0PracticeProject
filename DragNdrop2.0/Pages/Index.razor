@@ -1,0 +1,50 @@
+﻿@page "/"
+@using DragNdrop2._0.Models;
+<JobsContainer Jobs="Jobs" OnStatusUpdated="HandleStatusUpdated">
+  @*<JobList ListStatus="JobStatuses.Todo" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Started, JobStatuses.InProgress})" />
+    <JobList ListStatus="JobStatuses.Started" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Todo})" />
+    <JobList ListStatus="JobStatuses.InProgress" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Started})" />
+    <JobList ListStatus="JobStatuses.Completed" AllowedStatuses="@(new JobStatuses[] { JobStatuses.InProgress })" />
+    <JobList ListStatus="JobStatuses.Done" AllowedStatuses="@(new JobStatuses[] { JobStatuses.InProgress })" />*@
+
+    <JobList ListStatus="JobStatuses.TODO" AllowedStatuses="@(new JobStatuses[] { JobStatuses.INPROGRESS})" />
+    <JobList ListStatus="JobStatuses.INPROGRESS" AllowedStatuses="@(new JobStatuses[] { JobStatuses.TODO, JobStatuses.COMPLETED})" />
+    <JobList ListStatus="JobStatuses.COMPLETED" AllowedStatuses="@(new JobStatuses[] { JobStatuses.INPROGRESS, JobStatuses.DONE})" />
+    <JobList ListStatus="JobStatuses.DONE" AllowedStatuses="@(new JobStatuses[] { JobStatuses.COMPLETED , JobStatuses.INPROGRESS })" />
+
+</JobsContainer>
+
+<hr />
+<p>Last updated job was: <strong>@lastUpdatedJob</strong></p>
+<hr />
+
+@foreach (var task in Jobs)
+{
+    <p>@task.Description - <strong>@task.Status</strong></p>
+}
+
+@code {
+    List<JobModel> Jobs = new List<JobModel>();
+    string lastUpdatedJob = "";
+
+    protected override void OnInitialized()
+    {
+        //Jobs.Add(new JobModel { Id = 1, Description = "Creating Database", Status = JobStatuses.Todo, LastUpdated = DateTime.Now });
+        //Jobs.Add(new JobModel { Id = 2, Description = "Designing UI", Status = JobStatuses.Todo, LastUpdated = DateTime.Now });
+        //Jobs.Add(new JobModel { Id = 3, Description = "Data Binding ", Status = JobStatuses.Todo, LastUpdated = DateTime.Now });
+        //Jobs.Add(new JobModel { Id = 4, Description = "Fix  All Error", Status = JobStatuses.Todo, LastUpdated = DateTime.Now });
+        //Jobs.Add(new JobModel { Id = 5, Description = "Finish blog ", Status = JobStatuses.Todo, LastUpdated = DateTime.Now });
+
+
+        Jobs.Add(new JobModel { Id = 1, Description = "Creating Database", Status = JobStatuses.TODO, LastUpdated = DateTime.Now });
+        Jobs.Add(new JobModel { Id = 2, Description = "Designing UI", Status = JobStatuses.TODO, LastUpdated = DateTime.Now });
+        Jobs.Add(new JobModel { Id = 3, Description = "Data Binding ", Status = JobStatuses.TODO, LastUpdated = DateTime.Now });
+        Jobs.Add(new JobModel { Id = 4, Description = "Fix  All Error", Status = JobStatuses.TODO, LastUpdated = DateTime.Now });
+        Jobs.Add(new JobModel { Id = 5, Description = "Finish blog ", Status = JobStatuses.TODO, LastUpdated = DateTime.Now });
+    }
+
+    void HandleStatusUpdated(JobModel updatedJob)
+    {
+        lastUpdatedJob = updatedJob.Description;
+    }
+}
